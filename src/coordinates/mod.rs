@@ -1,16 +1,26 @@
 use std::fmt;
 
+/// Linear data unit scale, 100 units = 1 meter (i.e. cm scale)
 pub const SCALE_LINEAR: i32 = 100;
+/// Inverse of SCALE_LINEAR for conversion back to meter-normalized coordinates
 pub const INV_SCALE_LIN: f32 = 1.0 / SCALE_LINEAR as f32;
 
+/// Angular data unit scale, 10,000 units = 1 degree
 pub const SCALE_ANGULAR: i32 = 10000;
+/// Inverse of SCALE_ANGULAR for conversion back to degree-normalized coordinates
 pub const INV_SCALE_ANG: f32 = 1.0 / SCALE_ANGULAR as f32;
 
+/// Earth's radius in meters
 pub const RADIUS_F: f32 = 6378137.0;
+/// Earth's radius in data units
 pub const RADIUS_I: i32 = RADIUS_F as i32 * SCALE_LINEAR;
 
-// Point in linear/cartesian space.
-// For our purposes, (0, 0, 0) is Earth's center
+/// Excessively long value of Pi for use in detailed angular conversions
+pub const PI: f64 = 
+3.1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421171;
+
+/// Point in linear/cartesian space, measured in data units
+// PtLinear::zero(), or (0, 0, 0), is Earth's center
 pub struct PtLinear {
     x: i32,
     y: i32,
@@ -26,6 +36,7 @@ impl PtLinear {
         }
     }
 
+    /// Converts linear coordinates to angular coordinates
     pub fn to_angular(&self) -> PtAngular {
         PtAngular {
             lat: 0,
@@ -65,9 +76,12 @@ impl fmt::Debug for PtLinear {
     }
 }
 
-// Point in angular/geographic space.
-// For our purposes, (0, 0, 0) is MSL at 0 degrees Latitude, 0 degrees Longitude
-// For reference, lon > 0 is East, lon < 0 is West
+/// Point in angular space (i.e. lat/long/alt), measured in data units
+// PtAngular::zero(), or (0N, 0E, 0), is MSL (1 Earth radius)
+// at 0 degrees Latitude, 0 degrees Longitude
+// +lat is North, -lat is South
+// +lon is East, -lon is West
+// +alt is above sea level, -alt is subsurface
 pub struct PtAngular {
     lat: i32,
     lon: i32,
@@ -83,6 +97,7 @@ impl PtAngular {
         }
     }
     
+    /// Converts angular coordinates to linear coordinates
     pub fn to_linear(&self) -> PtLinear {
         PtLinear {
             x: 0,
