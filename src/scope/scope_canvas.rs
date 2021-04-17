@@ -1,9 +1,11 @@
 use iced::{
-    Color, HorizontalAlignment, Point, Rectangle, Size, VerticalAlignment, 
+    Color, HorizontalAlignment, Point, Rectangle, Size, VerticalAlignment, Vector,
     canvas::{
         self, Cursor, Frame, Geometry, Path, Stroke, Text
     }
 };
+
+use crate::shapes;
 
 #[derive(Default)]
 pub struct ScopeState {
@@ -41,18 +43,36 @@ impl<Message> canvas::Program<Message> for ScopeState {
         });
 
         let midground = self.midground_cache.draw(bounds.size(), |frame| {
+            let radius = 3.0 + (self.some_state_value * 0.12);
+            
             let circle = Path::circle(
                 frame.center(),
-                3.0 + (self.some_state_value * 0.12)
+                radius
             );
-            let stroke = Stroke {
+            let offsetpoint = frame.center() + Vector::new(10.0, 0.0);
+            let pentagon = shapes::polygon::new(
+                offsetpoint,
+                radius,
+                4
+            );
+
+            let str_blue = Stroke {
                 color: Color::from_rgb(0.0, 0.0, 1.0),
                 width: 2.0,
                 ..Stroke::default()
             };
+            let str_red = Stroke {
+                color: Color::from_rgb(1.0, 0.0, 0.0),
+                width: 2.0,
+                ..Stroke::default()
+            };
 
-            frame.fill(&circle, Color::from_rgb(0.0, 0.0, 0.2));
-            frame.stroke(&circle, stroke);
+
+            frame.fill(&circle, Color::from_rgba(0.0, 0.0, 1.0, 0.33));
+            frame.stroke(&circle, str_blue);
+
+            frame.fill(&&pentagon, Color::from_rgba(1.0, 0.0, 0.0, 0.33));
+            frame.stroke(&pentagon, str_red);
         });
 
         let foreground = self.foreground_cache.draw(bounds.size(), |frame| {

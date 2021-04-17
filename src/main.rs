@@ -1,5 +1,6 @@
 mod coordinates;
 mod scope;
+pub mod shapes;
 
 use iced::{
     Sandbox, window

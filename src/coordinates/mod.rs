@@ -21,6 +21,7 @@ pub const PI: f64 =
 
 /// Point in linear/cartesian space, measured in data units
 // PtLinear::zero(), or (0, 0, 0), is Earth's center
+#[derive(Default)]
 pub struct PtLinear {
     x: i32,
     y: i32,
@@ -28,14 +29,6 @@ pub struct PtLinear {
 }
 
 impl PtLinear {
-    pub fn zero() -> PtLinear {
-        PtLinear {
-            x: 0,
-            y: 0,
-            z: 0,
-        }
-    }
-
     /// Converts linear coordinates to angular coordinates
     pub fn to_angular(&self) -> PtAngular {
         PtAngular {
@@ -82,21 +75,14 @@ impl fmt::Debug for PtLinear {
 // +lat is North, -lat is South
 // +lon is East, -lon is West
 // +alt is above sea level, -alt is subsurface
+#[derive(Default)]
 pub struct PtAngular {
     lat: i32,
     lon: i32,
     alt: i32,
 }
 
-impl PtAngular {
-    pub fn zero() -> PtAngular {
-        PtAngular {
-            lat: 0,
-            lon: 0,
-            alt: 0,
-        }
-    }
-    
+impl PtAngular {    
     /// Converts angular coordinates to linear coordinates
     pub fn to_linear(&self) -> PtLinear {
         PtLinear {
@@ -175,7 +161,7 @@ mod tests {
 
     #[test]
     fn linear_to_angular () {
-        let lin_temp = PtLinear::zero();
+        let lin_temp = PtLinear::default();
         let ang_temp = PtAngular {
             lat: 0,
             lon: 0,
@@ -187,7 +173,7 @@ mod tests {
 
     #[test]
     fn angular_to_linear () {
-        let ang_temp = PtAngular::zero();
+        let ang_temp = PtAngular::default();
         let lin_temp = PtLinear {
             x: 0,
             y: 0,
