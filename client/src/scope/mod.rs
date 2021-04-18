@@ -1,4 +1,6 @@
-use iced::{Canvas, Column, Container, Element, Length, Row, Sandbox, Slider, Text, canvas, slider, widget};
+use iced::{
+    canvas, slider, widget, Canvas, Column, Container, Element, Length, Row, Sandbox, Slider, Text,
+};
 
 mod scope_canvas;
 use scope_canvas::ScopeState;
@@ -8,7 +10,6 @@ pub struct MainScope {
     slider: slider::State,
     state: ScopeState,
 }
-
 
 #[derive(Debug, Clone)]
 pub enum Message {
@@ -32,7 +33,7 @@ impl Sandbox for MainScope {
             Message::SliderChanged(value) => {
                 self.state.some_state_value = value;
                 println!("some_value updated to {}", self.state.some_state_value);
-            },
+            }
         }
 
         self.state.update();
@@ -52,9 +53,8 @@ impl Sandbox for MainScope {
         let canvas: Canvas<Message, &mut ScopeState> = Canvas::new(&mut self.state)
             .width(Length::Fill)
             .height(Length::Fill)
-            .into()
-        ;
-        
+            .into();
+
         let left_column = Column::new()
             .spacing(20)
             .padding(20)
@@ -63,32 +63,29 @@ impl Sandbox for MainScope {
             .push(slider)
             .push(text)
             .push(text2);
-        
+
         let scope_column = Column::new()
             .width(Length::FillPortion(4))
             .push(Text::new("Scope Area"))
             .push(canvas)
             .push(widget::Rule::horizontal(5))
             .push(Text::new("Lower info area"))
-            .push(widget::Space::new(Length::Fill, Length::Units(200)))
-        ;
+            .push(widget::Space::new(Length::Fill, Length::Units(200)));
 
         let right_column = Column::new()
             .spacing(20)
             .padding(20)
             .width(Length::FillPortion(1))
             .max_width(100)
-            .push(Text::new("Right column"))
-        ;        
+            .push(Text::new("Right column"));
 
         let vertsplitters = Row::new()
             .push(left_column)
             .push(widget::Rule::vertical(5))
             .push(scope_column)
             .push(widget::Rule::vertical(5))
-            .push(right_column)
-        ;
-        
+            .push(right_column);
+
         Container::new(vertsplitters)
             .width(Length::Fill)
             .height(Length::Fill)

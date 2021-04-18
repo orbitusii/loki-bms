@@ -2,9 +2,7 @@ mod coordinates;
 mod scope;
 pub mod shapes;
 
-use iced::{
-    Sandbox, window
-};
+use iced::{window, Sandbox};
 use scope::MainScope;
 
 fn main() {
