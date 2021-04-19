@@ -5,3 +5,6 @@ edition = "2018"
 
 [dependencies]
 geo = "0.17.1"
+chrono = "0.4"
+kd-tree = "0.3"
+typenum = "1.13"
