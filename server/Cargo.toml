@@ -3,11 +3,17 @@ name = "loki-bms-server"
 version = "0.1.0"
 edition = "2018"
 
+[features]
+dcs = []
+
 [dependencies]
 loki-bms-common     = { path = "../common" }
-dcsjsonrpc-client   = { git = "https://github.com/rkusa/dcs-jsonrpc", commit = "b8c83705d1dffbf4a1fa5f1e44d6d08547233f13" }
+dcsjsonrpc-client   = { git = "https://github.com/rkusa/dcs-jsonrpc" }
 clap                = "3.0.0-beta.2"
 config              = "0.11.0"
 serde               = "1.0.125"
 serde_derive        = "1.0.125"
 tokio               = { version = "1", features = ["full"] }
+log                 = "0.4.14"
+env_logger          = "0.8.3"
+futures             = "0.3.14"

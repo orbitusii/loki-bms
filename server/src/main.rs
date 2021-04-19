@@ -3,54 +3,27 @@
 extern crate serde;
 
 #[macro_use]
+extern crate log;
+
+#[macro_use]
 extern crate serde_derive;
 
-use std::net::IpAddr;
-use clap::Clap;
-use dcsjsonrpc_client::Client;
 use crate::settings::Settings;
-use tokio::net::TcpListener;
-use std::error::Error;
-use tokio::sync::Mutex;
-use std::time::Duration;
 use std::sync::Arc;
-use tokio::io::AsyncReadExt;
 
-mod trackfile;
+mod server;
 mod settings;
-
-#[derive(Clap)]
-struct Opts {
-    #[clap(long)]
-    listen_ip: IpAddr,
-    #[clap(long)]
-    listen_port: u16,
-    #[clap(long)]
-    dcs_rpc_ip: IpAddr,
-    #[clap(long)]
-    dcs_rpc_port: u16,
-}
+mod tracks;
 
 #[tokio::main]
-async fn main() -> Result<!, Box<dyn Error>> {
-    let Opts { listen_ip, listen_port, dcs_rpc_ip, dcs_rpc_port } = Opts::parse();
-    let settings = Settings::new().unwrap();
+async fn main() {
+    env_logger::init();
 
-    let dcs_client = Client::<usize>::connect(format!("{}:{}", dcs_rpc_ip, dcs_rpc_port)).unwrap();
+    let settings = Arc::new(Settings::new().unwrap());
 
-    let listener = TcpListener::bind(format!("{}:{}", listen_ip, listen_port)).await?;
-
-    // let trackfiles = Arc::new(Mutex::new(Vec::new()));
-
-    tokio::spawn(async move {
-        // let mut trackfiles = trackfiles.lock().await;
-
-
-        tokio::time::sleep(Duration::from_secs(settings.refresh_rate as u64));
-    });
-
-    loop {
-        let (mut socket, _) = listener.accept().await?;
-
-    }
+    // If either task returns an error or panics, the application should quit
+    futures::try_join!(
+        tokio::spawn(server::start(settings.clone())),
+        tokio::spawn(tracks::handle(settings.clone())),
+    );
 }

@@ -1,0 +1,6 @@
+{
+    "rust-analyzer.cargo.allFeatures": true,
+    "rust-analyzer.diagnostics.disabled": [
+        "unresolved-macro-call"
+    ]
+}

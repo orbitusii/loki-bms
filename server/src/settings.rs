@@ -1,14 +1,16 @@
+use std::net::SocketAddr;
+
 use config as rsconfig;
 use config::{ConfigError, File};
-use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
 pub struct Settings {
     pub refresh_rate: u8,
+    pub dcs_rpc: SocketAddr,
+    pub listen: SocketAddr,
 }
 
 impl Settings {
-
     pub fn new() -> Result<Self, ConfigError> {
         let mut config = rsconfig::Config::new();
 
@@ -17,5 +19,4 @@ impl Settings {
 
         config.try_into()
     }
-
 }

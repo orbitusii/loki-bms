@@ -1,0 +1,101 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'loki-bms-client'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=loki-bms-client",
+                    "--package=loki-bms-client"
+                ],
+                "filter": {
+                    "name": "loki-bms-client",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'loki-bms-client'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=loki-bms-client",
+                    "--package=loki-bms-client"
+                ],
+                "filter": {
+                    "name": "loki-bms-client",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in library 'loki-bms-common'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--lib",
+                    "--package=loki-bms-common"
+                ],
+                "filter": {
+                    "name": "loki-bms-common",
+                    "kind": "lib"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'loki-bms-server'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=loki-bms-server",
+                    "--package=loki-bms-server"
+                ],
+                "filter": {
+                    "name": "loki-bms-server",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'loki-bms-server'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=loki-bms-server",
+                    "--package=loki-bms-server"
+                ],
+                "filter": {
+                    "name": "loki-bms-server",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
