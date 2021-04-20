@@ -18,6 +18,7 @@ impl TrackDb {
         self.tree = kd_tree::KdTree::build_by_ordered_float(self.tracks.clone());
     }
 
+    #[cfg(feature = "server")]
     pub fn correlate_data(&mut self, datapoint: tracking::Datapoint) -> Result<(), Error> {
         let nearest = self.tree.nearest(&datapoint.position).unwrap().item;
 
