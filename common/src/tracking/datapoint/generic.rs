@@ -1,4 +1,4 @@
-use crate::tracking::{Datapoint, Datasource, Position};
+use crate::tracking::{DataType, Datapoint, Position};
 
 #[derive(Debug, Default, Clone)]
 pub struct GenData {
@@ -23,18 +23,18 @@ impl Default for Distance {
     }
 }
 
-impl From<GenData> for Datapoint {
-    fn from(data: GenData) -> Self {
-        let altitude = match data.alt {
+impl Into<Datapoint> for GenData {
+    fn into(self) -> Datapoint {
+        let altitude = match self.alt {
             Distance::Meters(m) => (m * 3.28084) as i32,
             Distance::Feet(f) => f,
         };
 
         Datapoint {
-            source: Datasource::SELF,
-            source_number: data.source_number,
+            source: DataType::Real,
+            source_number: self.source_number,
 
-            position: Position::new(data.lat, data.lon, altitude),
+            position: Position::new(self.lat, self.lon, altitude),
 
             ..Datapoint::default()
         }

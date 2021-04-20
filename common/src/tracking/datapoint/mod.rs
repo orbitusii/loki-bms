@@ -1,6 +1,7 @@
 use crate::tracking::{LinkData, Position};
 use chrono::prelude::*;
 
+// TODO: move source data structs (dcs::DcsData and generic::GenData) to Server crate
 //#[cfg(all(feature = "server", feature = "dcs"))]
 mod dcs;
 //#[cfg(all(feature = "server", feature = "dcs"))]
@@ -14,7 +15,7 @@ pub use generic::GenData;
 /// A generic data point
 #[derive(Debug, Clone)]
 pub struct Datapoint {
-    pub source: Datasource,
+    pub source: DataType,
     pub source_number: u32,
 
     pub timestamp: DateTime<Utc>,
@@ -27,7 +28,7 @@ pub struct Datapoint {
 impl Default for Datapoint {
     fn default() -> Self {
         Datapoint {
-            source: Datasource::SELF,
+            source: DataType::Real,
             source_number: 0,
 
             timestamp: Utc::now(),
@@ -39,6 +40,8 @@ impl Default for Datapoint {
 }
 
 #[derive(Debug, Clone)]
-pub enum Datasource {
-    SELF,
+pub enum DataType {
+    Sim,
+    Real,
+    Backlink,
 }

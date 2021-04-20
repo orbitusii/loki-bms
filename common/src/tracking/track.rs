@@ -1,13 +1,14 @@
-use super::{Datapoint, LinkData, Position, ID};
+use super::{DataType, Datapoint, LinkData, Position, ID};
 
 #[derive(Debug, Clone)]
 pub struct Track {
     pub track_number: u32,
+    pub track_type: DataType,
     pub id: ID,
 
     pub position: Position,
 
-    datapoints: Vec<Datapoint>,
+    pub datapoints: Vec<Datapoint>,
     pub history: Vec<Datapoint>,
 
     pub link_data: Option<LinkData>,
@@ -23,6 +24,7 @@ impl Default for Track {
     fn default() -> Self {
         Track {
             track_number: 0,
+            track_type: DataType::Real,
             id: ID::PND,
 
             position: Position::default(),

@@ -1,4 +1,4 @@
-use crate::tracking::{Datapoint, Datasource, LinkData, Position};
+use crate::tracking::{DataType, Datapoint, LinkData, Position};
 
 #[derive(Debug, Default, Clone)]
 pub struct DcsData {
@@ -12,21 +12,21 @@ pub struct DcsData {
     pub fuel: f32,
 }
 
-impl From<DcsData> for Datapoint {
-    fn from(data: DcsData) -> Self {
+impl Into<Datapoint> for DcsData {
+    fn into(self) -> Datapoint {
         Datapoint {
-            source: Datasource::SELF,
-            source_number: data.id,
+            source: DataType::Real,
+            source_number: self.id,
 
             position: Position::new(
-                data.lat as f64,
-                data.lon as f64,
-                (data.alt * 3.28084) as i32,
+                self.lat as f64,
+                self.lon as f64,
+                (self.alt * 3.28084) as i32,
             ),
 
             link_data: Some(LinkData {
-                callsign: data.callsign,
-                fuel: Some(data.fuel),
+                callsign: self.callsign,
+                fuel: Some(self.fuel),
                 weapons: None,
             }),
 
