@@ -1,4 +1,5 @@
 #![feature(never_type)]
+#![feature(assert_matches)]
 
 extern crate serde;
 
@@ -10,13 +11,14 @@ extern crate serde_derive;
 
 use crate::settings::Settings;
 use std::sync::Arc;
+use std::error::Error;
 
 mod server;
 mod settings;
 mod tracks;
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn Error>> {
     env_logger::init();
 
     let settings = Arc::new(Settings::new().unwrap());
@@ -25,5 +27,7 @@ async fn main() {
     futures::try_join!(
         tokio::spawn(server::start(settings.clone())),
         tokio::spawn(tracks::handle(settings.clone())),
-    );
+    )?;
+
+    Ok(())
 }

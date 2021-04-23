@@ -5,3 +5,5 @@ edition = "2018"
 
 [dependencies]
 geo = "0.17.1"
+serde               = "1.0.125"
+serde_derive        = "1.0.125"

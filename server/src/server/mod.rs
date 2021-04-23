@@ -6,6 +6,8 @@ use crate::settings::Settings;
 use tokio::net::TcpListener;
 
 pub mod connection;
+mod router;
+mod routes;
 
 pub async fn start(settings: Arc<Settings>) {
     info!("Starting server...");
@@ -29,5 +31,21 @@ pub async fn start(settings: Arc<Settings>) {
             }
         };
         tokio::spawn(connection::handle(socket, addr));
+    }
+}
+
+#[cfg(test)]
+pub mod tests {
+    use std::net::{Ipv4Addr, SocketAddr};
+
+    use loki_bms_common::protocol::{client, server};
+    use tokio::net::{TcpListener, TcpStream};
+    use tokio_serde::formats::Bincode;
+    use tokio_util::codec::{Framed, LengthDelimitedCodec};
+
+    pub async fn testing_server() -> TcpListener {
+        TcpListener::bind(SocketAddr::new(Ipv4Addr::LOCALHOST.into(), 1338))
+            .await
+            .unwrap()
     }
 }
